@@ -15,6 +15,13 @@ pipeline{
                 sh "docker build . -t 776550/nodeapp:${env.TAG}"
             }
         }
+        stage('trivy-scan-iamge'){
+            steps{
+                script{
+                    sh "trivy image -f json -o trivyscanresult.json 776550/nodeapp:${env.TAG}"
+                }
+            }
+        }
         stage('docker-push'){
             environment{
              registryCredential ='docker-hub-cred'   
